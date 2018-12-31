@@ -21,7 +21,8 @@ export class Tab1Page {
 	}
 
 	loadXml() {
-		this.http.get('https://media.jamesrskemp.com/xml/video_games.xml',
+		//this.http.get('https://media.jamesrskemp.com/xml/video_games.xml',
+		this.http.get('/assets/data/video_games.xml',
 		{
 			headers: new HttpHeaders()
 			.set('Content-Type', 'text/xml')
