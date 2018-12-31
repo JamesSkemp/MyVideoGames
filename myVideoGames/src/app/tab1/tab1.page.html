@@ -7,6 +7,14 @@
 </ion-header>
 
 <ion-content>
+	<ion-item-group>
+		<ion-item-divider color="light">ItemDivider</ion-item-divider>
+		<ion-item *ngFor="let item of xmlItems">
+			{{ item.title }}
+		</ion-item>
+	</ion-item-group>
+
+
     <ion-card class="welcome-card">
       <ion-img src="/assets/shapes.svg"></ion-img>
       <ion-card-header>
