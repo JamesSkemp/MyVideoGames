@@ -1,21 +1,20 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab One
+      Video Games by Title
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 	<ion-item-group>
-		<ion-item-divider color="light">ItemDivider</ion-item-divider>
 		<ion-item *ngFor="let item of xmlItems">
 			{{ item.title }}
 		</ion-item>
 	</ion-item-group>
 
 
-    <ion-card class="welcome-card">
+    <!--<ion-card class="welcome-card">
       <ion-img src="/assets/shapes.svg"></ion-img>
       <ion-card-header>
         <ion-card-subtitle>Get Started</ion-card-subtitle>
@@ -45,5 +44,5 @@
         <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
         <ion-label>Theme Your App</ion-label>
       </ion-item>
-    </ion-list>
+    </ion-list>-->
 </ion-content>

@@ -41,7 +41,6 @@ export class Tab1Page {
 
 	parseXml(data) {
 		return new Promise(resolve => {
-			let k;
 			const arr = [],
 				parser = new xml2js.Parser(
 				{
@@ -51,18 +50,45 @@ export class Tab1Page {
 
 			parser.parseString(data, function (err, result) {
 				const obj = result.games;
-				for (k in obj.game) {
-					var item = obj.game[k];
+				for (const game of obj.game) {
 					arr.push({
 						//id: item.id[0],
-						title: item.title[0],
+						title: game.title[0],
+						own: game.own[0],
+						notes: game.notes[0]
 						//publisher : item.publisher[0],
 						//genre: item.genre[0]
 					});
 				}
+
+				console.log(arr);
+				// TODO this isn't working
+				arr.sort((g) => g.title);
+				console.log(arr.sort((g) => g.title));
 
 				resolve(arr);
 			});
 		});
 	}
 }
+
+/*
+<game id="2" electronic="true" beat="true" addOn="true">
+	<title>flOw</title>
+	<system>
+		<console>PlayStation</console>
+		<version>3</version>
+	</system>
+	<purchase>
+		<date>2007-11-17</date>
+		<price>7.99</price>
+		<place>PlayStation Network</place>
+	</purchase>
+	<sell>
+		<date>2010-05-17</date>
+		<price>5.83</price>
+	</sell>
+	<own>yes</own>
+	<notes>Bought online.</notes>
+</game>
+*/
