@@ -33,8 +33,8 @@ export class Tab1Page {
 		})
 		.subscribe((data) => {
 			this.parseXml(data)
-			.then((data) => {
-				this.xmlItems = data;
+			.then((data: any[]) => {
+				this.xmlItems = data.sort((g1, g2) => (g1.title.toLowerCase() > g2.title.toLowerCase()) ? 1 : ((g2.title.toLowerCase() > g1.title.toLowerCase()) ? -1 : 0));
 			});
 		});
 	}
@@ -52,22 +52,25 @@ export class Tab1Page {
 				const obj = result.games;
 				for (const game of obj.game) {
 					arr.push({
-						//id: item.id[0],
 						title: game.title[0],
+						systemConsole: game.system[0].console,
+						systemVersion: game.system[0].version,
+						purchaseDate: game.purchase[0].date,
+						purchasePrice: game.purchase[0].price,
+						purchasePlace: game.purchase[0].place,
 						own: game.own[0],
 						notes: game.notes[0]
-						//publisher : item.publisher[0],
-						//genre: item.genre[0]
 					});
 				}
 
-				console.log(arr);
-				// TODO this isn't working
-				arr.sort((g) => g.title);
-				console.log(arr.sort((g) => g.title));
-
 				resolve(arr);
 			});
+		});
+	}
+
+	filterGames(searchTerm: string) {
+		return this.xmlItems.filter((item) => {
+			return item.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
 		});
 	}
 }
