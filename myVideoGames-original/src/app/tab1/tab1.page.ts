@@ -9,6 +9,7 @@ import xml2js from 'xml2js';
 	styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
+	public searchTerm: string;
 	public xmlItems: any;
 	private http: HttpClient;
 
@@ -72,6 +73,10 @@ export class Tab1Page {
 		return this.xmlItems.filter((item) => {
 			return item.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
 		});
+	}
+
+	setFilteredItems() {
+		this.xmlItems = this.filterGames(this.searchTerm);
 	}
 }
 
