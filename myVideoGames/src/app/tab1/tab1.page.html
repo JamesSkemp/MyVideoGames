@@ -1,13 +1,20 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Tab One
-    </ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-title>Video Games by Title</ion-title>
+		<ion-searchbar [(ngModel)]="searchTerm" (search)="setFilteredItems()"></ion-searchbar>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-card class="welcome-card">
+	<ion-virtual-scroll [items]="filteredItems">
+		<ion-item *virtualItem="let item">
+			<strong>{{ item.title }} (Own: {{ item.own }})</strong>
+			<p item-content>{{ item.systemConsole }} {{ item.systemVersion }}</p>
+			<p item-content>{{ item.purchaseDate }} {{ item.purchasePrice }} {{ item.purchasePlace }}</p>
+			<p text-wrap>{{ item.notes }}</p>
+		</ion-item>
+	</ion-virtual-scroll>
+    <!--<ion-card class="welcome-card">
       <img src="/assets/shapes.svg" alt="" />
       <ion-card-header>
         <ion-card-subtitle>Get Started</ion-card-subtitle>
@@ -37,5 +44,5 @@
         <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
         <ion-label>Theme Your App</ion-label>
       </ion-item>
-    </ion-list>
+    </ion-list>-->
 </ion-content>

@@ -12,7 +12,10 @@
     "import-blacklist": [
       true,
       "rxjs/Rx"
-    ],
+	],
+	"indent": [
+		true, "tabs"
+	],
     "interface-name": false,
     "max-classes-per-file": false,
     "max-line-length": [

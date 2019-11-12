@@ -1,8 +1,8 @@
 {
   "name": "myVideoGames",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "James Skemp",
+  "homepage": "https://github.com/JamesSkemp/MyVideoGames",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -16,6 +16,7 @@
     "@angular/common": "~8.1.2",
     "@angular/core": "~8.1.2",
     "@angular/forms": "~8.1.2",
+    "@angular/http": "^7.2.15",
     "@angular/platform-browser": "~8.1.2",
     "@angular/platform-browser-dynamic": "~8.1.2",
     "@angular/router": "~8.1.2",
@@ -25,7 +26,10 @@
     "@ionic/angular": "^4.7.1",
     "core-js": "^2.5.4",
     "rxjs": "~6.5.1",
+    "stream": "0.0.2",
+    "timers": "^0.1.1",
     "tslib": "^1.9.0",
+    "xml2js": "^0.4.22",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
