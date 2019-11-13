@@ -8,10 +8,12 @@
 <ion-content>
 	<ion-virtual-scroll [items]="filteredItems">
 		<ion-item *virtualItem="let item">
-			<strong>{{ item.title }} (Own: {{ item.own }})</strong>
-			<p item-content>{{ item.systemConsole }} {{ item.systemVersion }}</p>
-			<p item-content>{{ item.purchaseDate }} {{ item.purchasePrice }} {{ item.purchasePlace }}</p>
-			<p text-wrap>{{ item.notes }}</p>
+			<ion-label class="ion-text-wrap">
+				<strong>{{ item.title }} (Own: {{ item.own }})</strong>
+				<p>{{ item.systemConsole }} {{ item.systemVersion }}</p>
+				<p>{{ item.purchaseDate }} {{ item.purchasePrice }} {{ item.purchasePlace }}</p>
+				<p>{{ item.notes }}</p>
+			</ion-label>
 		</ion-item>
 	</ion-virtual-scroll>
     <!--<ion-card class="welcome-card">
