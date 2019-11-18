@@ -87,8 +87,8 @@
       "cordova-plugin-filepath": {}
     },
     "platforms": [
-      "android",
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }

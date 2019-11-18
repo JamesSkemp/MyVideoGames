@@ -4,6 +4,7 @@
 - `ionic start myVideoGames tabs`
 - Selected v4 (beta)
 - `ionic serve` within the application directory to run
+	- `ionic cordova run android -l` to run in the Android emulator.
 
 [Parsing XML, CSV and TSV files with Ionic][1] used to help understand how to pull XML data.
 

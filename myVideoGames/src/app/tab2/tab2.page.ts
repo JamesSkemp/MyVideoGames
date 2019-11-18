@@ -33,7 +33,6 @@ export class Tab2Page {
 
 				this.fileTransfer.download(this.XmlFileUrl, this.file.dataDirectory + 'downloaded.xml')
 					.then(entry => {
-						alert('File saved to ' + entry.nativeURL);
 						this.file.checkFile(this.file.dataDirectory, 'video_games.xml')
 							.then(_ => {
 								// Delete the old file.
@@ -44,7 +43,9 @@ export class Tab2Page {
 						// Old file deleted. Rename the deleted file.
 						this.file.moveFile(this.file.dataDirectory, 'downloaded.xml', this.file.dataDirectory, 'video_games.xml')
 							.then(movedEntry => {
-								this.DisplayMessage('XML has been downloaded and is now available for use.');
+								const message = 'XML has been downloaded and is now available for use.\n'
+								+ 'If this is your first time downloading a file, you will be prompted to allow file system access.';
+								this.DisplayMessage(message);
 							})
 							.catch(err => { console.log(err); });
 					})

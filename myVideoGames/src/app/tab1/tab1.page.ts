@@ -29,13 +29,12 @@ export class Tab1Page {
 	}
 
 	loadXml(fileName: string) {
-		const fileDirectory = (fileName === 'sample' ? 'assets/data/' : this.file.dataDirectory);
-
-		this.DisplayMessage(fileDirectory);
-		this.DisplayMessage2(this.file.dataDirectory);
+		// Uncomment the following line to verify the data path.
+		// TODO move somewhere else
+		// this.DisplayMessage2(this.file.dataDirectory);
 
 		if (fileName !== 'sample') {
-			this.filePath.resolveNativePath(fileDirectory)
+			this.filePath.resolveNativePath(this.file.dataDirectory)
 				.then(filePath => {
 					this.file.readAsText(filePath, fileName + '.xml')
 					.then(data => {
@@ -61,7 +60,7 @@ export class Tab1Page {
 					console.log(err);
 				});
 		} else {
-			this.http.get(fileDirectory + fileName + '.xml',
+			this.http.get('assets/data/' + fileName + '.xml',
 				{
 					headers: new HttpHeaders()
 						.set('Content-Type', 'text/xml')
