@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import xml2js from 'xml2js';
+import { File } from '@ionic-native/file/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
 
 @Component({
 	selector: 'app-tab1',
@@ -12,39 +14,85 @@ export class Tab1Page {
 	public filteredItems: any;
 	private xmlItems: any;
 
-	constructor(private http: HttpClient) {
+	constructor(private http: HttpClient, private file: File, private filePath: FilePath) {
 		this.searchTerm = '';
 	}
 
 	ionViewWillEnter() {
-		this.loadXml();
+		this.file.checkFile(this.file.dataDirectory, 'video_games.xml')
+			.then(_ => { this.loadXml('video_games'); })
+			.catch(err => {
+				alert('A sample file will be loaded. Please go to the Settings tab to download your XML.');
+				this.loadXml('sample');
+			});
 	}
 
-	loadXml() {
-		this.http.get('/assets/data/video_games.xml',
-		{
-			headers: new HttpHeaders()
-			.set('Content-Type', 'text/xml')
-			.append('Access-Control-Allow-Methods', 'GET')
-			.append('Access-Control-Allow-Origin', '*')
-			.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Access-Control-Request-Method'),
-			responseType: 'text'
-		})
-		.subscribe((data) => {
-			this.parseXml(data)
-			.then((data2: any[]) => {
-				this.xmlItems = data2.sort(
-					(g1, g2) => (g1.title.toLowerCase() > g2.title.toLowerCase())
-					? 1
-					: ((g2.title.toLowerCase() > g1.title.toLowerCase())
-						? -1
-						: 0)
-				);
-			})
-			.then(() => {
-				this.filteredItems = [...this.xmlItems];
+	loadXml(fileName: string) {
+		let fileDirectory = (fileName === 'sample' ? 'assets/data/' : this.file.dataDirectory);
+
+		console.log(fileDirectory);
+		console.log(this.file.dataDirectory);
+		console.log(this.file.applicationDirectory);
+
+		this.file.listDir(this.file.applicationDirectory, '')
+			.then(entry => {
+				entry.forEach(a => console.log(a.fullPath));
 			});
-		});
+
+		if (fileName !== 'sample') {
+			this.filePath.resolveNativePath(fileDirectory)
+				.then(filePath => {
+					fileDirectory = filePath;
+				})
+				.catch(err => {
+					console.log(err);
+				});
+
+			this.file.readAsText(fileDirectory, fileName + '.xml')
+				.then(data => {
+					this.parseXml(data)
+					.then((data2: any[]) => {
+						this.xmlItems = data2.sort(
+							(g1, g2) => (g1.title.toLowerCase() > g2.title.toLowerCase())
+							? 1
+							: ((g2.title.toLowerCase() > g1.title.toLowerCase())
+								? -1
+								: 0)
+						);
+					})
+					.then(() => {
+						this.filteredItems = [...this.xmlItems];
+					});
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		} else {
+			this.http.get(fileDirectory + fileName + '.xml',
+				{
+					headers: new HttpHeaders()
+					.set('Content-Type', 'text/xml')
+					.append('Access-Control-Allow-Methods', 'GET')
+					.append('Access-Control-Allow-Origin', '*')
+					.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Access-Control-Request-Method'),
+					responseType: 'text'
+				})
+				.subscribe((data) => {
+					this.parseXml(data)
+					.then((data2: any[]) => {
+						this.xmlItems = data2.sort(
+							(g1, g2) => (g1.title.toLowerCase() > g2.title.toLowerCase())
+							? 1
+							: ((g2.title.toLowerCase() > g1.title.toLowerCase())
+								? -1
+								: 0)
+						);
+					})
+					.then(() => {
+						this.filteredItems = [...this.xmlItems];
+					});
+				});
+		}
 	}
 
 	parseXml(data) {
