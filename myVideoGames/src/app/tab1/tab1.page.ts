@@ -28,40 +28,32 @@ export class Tab1Page {
 	}
 
 	loadXml(fileName: string) {
-		let fileDirectory = (fileName === 'sample' ? 'assets/data/' : this.file.dataDirectory);
+		const fileDirectory = (fileName === 'sample' ? 'assets/data/' : this.file.dataDirectory);
 
-		console.log(fileDirectory);
-		console.log(this.file.dataDirectory);
-		console.log(this.file.applicationDirectory);
-
-		this.file.listDir(this.file.applicationDirectory, '')
-			.then(entry => {
-				entry.forEach(a => console.log(a.fullPath));
-			});
+		alert(fileDirectory);
+		alert(this.file.dataDirectory);
 
 		if (fileName !== 'sample') {
 			this.filePath.resolveNativePath(fileDirectory)
 				.then(filePath => {
-					fileDirectory = filePath;
-				})
-				.catch(err => {
-					console.log(err);
-				});
-
-			this.file.readAsText(fileDirectory, fileName + '.xml')
-				.then(data => {
-					this.parseXml(data)
-					.then((data2: any[]) => {
-						this.xmlItems = data2.sort(
-							(g1, g2) => (g1.title.toLowerCase() > g2.title.toLowerCase())
-							? 1
-							: ((g2.title.toLowerCase() > g1.title.toLowerCase())
-								? -1
-								: 0)
-						);
+					this.file.readAsText(filePath, fileName + '.xml')
+					.then(data => {
+						this.parseXml(data)
+						.then((data2: any[]) => {
+							this.xmlItems = data2.sort(
+								(g1, g2) => (g1.title.toLowerCase() > g2.title.toLowerCase())
+								? 1
+								: ((g2.title.toLowerCase() > g1.title.toLowerCase())
+									? -1
+									: 0)
+							);
+						})
+						.then(() => {
+							this.filteredItems = [...this.xmlItems];
+						});
 					})
-					.then(() => {
-						this.filteredItems = [...this.xmlItems];
+					.catch(err => {
+						console.log(err);
 					});
 				})
 				.catch(err => {
@@ -71,11 +63,11 @@ export class Tab1Page {
 			this.http.get(fileDirectory + fileName + '.xml',
 				{
 					headers: new HttpHeaders()
-					.set('Content-Type', 'text/xml')
-					.append('Access-Control-Allow-Methods', 'GET')
-					.append('Access-Control-Allow-Origin', '*')
-					.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Access-Control-Request-Method'),
-					responseType: 'text'
+						.set('Content-Type', 'text/xml')
+						.append('Access-Control-Allow-Methods', 'GET')
+						.append('Access-Control-Allow-Origin', '*')
+						.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Access-Control-Request-Method'),
+						responseType: 'text'
 				})
 				.subscribe((data) => {
 					this.parseXml(data)

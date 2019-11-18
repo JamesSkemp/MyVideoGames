@@ -20,7 +20,6 @@ export class Tab2Page {
 	DownloadFile() {
 		if (this.XmlFileUrl.length > 0) {
 			if (this.platform.is('cordova')) {
-				// TODO download file
 				console.log(this.file.dataDirectory);
 				// See if a downloaded file exists. If it does, delete it.
 				this.file.checkFile(this.file.dataDirectory, 'downloaded.xml')
@@ -51,6 +50,18 @@ export class Tab2Page {
 					})
 					.catch(err => { console.log(err); });
 			}
+		}
+	}
+
+	DeleteFile() {
+		if (this.platform.is('cordova')) {
+			this.file.checkFile(this.file.dataDirectory, 'video_games.xml')
+			.then(_ => {
+				// The file exists. Remove it.
+				this.file.removeFile(this.file.dataDirectory, 'video_games.xml')
+				.catch(err => { console.log(err); });
+			})
+			.catch(err => { console.log(err); });
 		}
 	}
 }
