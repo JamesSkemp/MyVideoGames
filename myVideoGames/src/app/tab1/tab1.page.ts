@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import xml2js from 'xml2js';
 import { File } from '@ionic-native/file/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
+import { ToastController } from '@ionic/angular';
 
 @Component({
 	selector: 'app-tab1',
@@ -14,7 +15,7 @@ export class Tab1Page {
 	public filteredItems: any;
 	private xmlItems: any;
 
-	constructor(private http: HttpClient, private file: File, private filePath: FilePath) {
+	constructor(public toastController: ToastController, private http: HttpClient, private file: File, private filePath: FilePath) {
 		this.searchTerm = '';
 	}
 
@@ -22,7 +23,7 @@ export class Tab1Page {
 		this.file.checkFile(this.file.dataDirectory, 'video_games.xml')
 			.then(_ => { this.loadXml('video_games'); })
 			.catch(err => {
-				alert('A sample file will be loaded. Please go to the Settings tab to download your XML.');
+				this.DisplayMessage('A sample file will be used. Please go to the Settings tab to download your XML.');
 				this.loadXml('sample');
 			});
 	}
@@ -30,8 +31,8 @@ export class Tab1Page {
 	loadXml(fileName: string) {
 		const fileDirectory = (fileName === 'sample' ? 'assets/data/' : this.file.dataDirectory);
 
-		alert(fileDirectory);
-		alert(this.file.dataDirectory);
+		this.DisplayMessage(fileDirectory);
+		this.DisplayMessage2(this.file.dataDirectory);
 
 		if (fileName !== 'sample') {
 			this.filePath.resolveNativePath(fileDirectory)
@@ -126,5 +127,24 @@ export class Tab1Page {
 		this.filteredItems = [...this.xmlItems];
 		this.filteredItems = this.filterGames(this.searchTerm);
 	}
-}
 
+	DisplayMessage(message: string) {
+		this.toastController.create({
+			message,
+			duration: 3000,
+			position: 'middle'
+		}).then(toastData => {
+			toastData.present();
+		});
+	}
+
+	DisplayMessage2(message: string) {
+		this.toastController.create({
+			message,
+			duration: 3000,
+			position: 'bottom'
+		}).then(toastData => {
+			toastData.present();
+		});
+	}
+}

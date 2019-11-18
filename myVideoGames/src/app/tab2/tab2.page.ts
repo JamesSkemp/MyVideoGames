@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/file/ngx';
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 
 @Component({
 	selector: 'app-tab2',
@@ -13,14 +13,15 @@ export class Tab2Page {
 	private fileTransfer: FileTransferObject;
 	XmlFileUrl = 'https://media.jamesrskemp.com/xml/video_games.xml';
 
-	constructor(public platform: Platform, private transfer: FileTransfer, private file: File) {
+	constructor(public platform: Platform, public toastController: ToastController, private transfer: FileTransfer, private file: File) {
 		this.fileTransfer = this.transfer.create();
 	}
 
 	DownloadFile() {
 		if (this.XmlFileUrl.length > 0) {
 			if (this.platform.is('cordova')) {
-				console.log(this.file.dataDirectory);
+				// TODO
+				this.DisplayMessage(this.file.dataDirectory);
 				// See if a downloaded file exists. If it does, delete it.
 				this.file.checkFile(this.file.dataDirectory, 'downloaded.xml')
 					.then(_ => {
@@ -43,8 +44,7 @@ export class Tab2Page {
 						// Old file deleted. Rename the deleted file.
 						this.file.moveFile(this.file.dataDirectory, 'downloaded.xml', this.file.dataDirectory, 'video_games.xml')
 							.then(movedEntry => {
-								console.log('File has been moved');
-								console.log(movedEntry);
+								this.DisplayMessage('XML has been downloaded and is now available for use.');
 							})
 							.catch(err => { console.log(err); });
 					})
@@ -58,10 +58,38 @@ export class Tab2Page {
 			this.file.checkFile(this.file.dataDirectory, 'video_games.xml')
 			.then(_ => {
 				// The file exists. Remove it.
-				this.file.removeFile(this.file.dataDirectory, 'video_games.xml')
+				this.file.removeFile(this.file.dataDirectory, 'video_games.xml').then(_ => {
+					this.toastController.create({
+						message: 'Downloaded file has been deleted. Sample data will be used.',
+						duration: 3000,
+						position: 'middle'
+					}).then(toastData => {
+						toastData.present();
+					});
+				})
 				.catch(err => { console.log(err); });
 			})
 			.catch(err => { console.log(err); });
 		}
+	}
+
+	DisplayMessage(message: string) {
+		return this.toastController.create({
+			message,
+			duration: 3000,
+			position: 'middle'
+		}).then(toastData => {
+			toastData.present();
+		});
+	}
+
+	DisplayMessage2(message: string) {
+		this.toastController.create({
+			message,
+			duration: 3000,
+			position: 'bottom'
+		}).then(toastData => {
+			toastData.present();
+		});
 	}
 }
