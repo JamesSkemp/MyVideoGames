@@ -40,4 +40,10 @@ Full schema information, including other optional attributes, can be found at [h
 
 [Parsing XML, CSV and TSV files with Ionic][1] used to help understand how to pull XML data.
 
+## Publishing
+1. `cordova platform remove android`
+2. Update version in config.xml.
+3. `cordova platform add android`
+4. `cordova build --release`
+
 [1]: http://masteringionic.com/blog/2016-12-18-parsing-xml-csv-and-tsv-files-with-ionic/
