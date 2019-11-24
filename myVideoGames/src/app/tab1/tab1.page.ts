@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import xml2js from 'xml2js';
+import { File } from '@ionic-native/file/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+import { ToastController } from '@ionic/angular';
 
 @Component({
 	selector: 'app-tab1',
@@ -9,34 +11,80 @@ import xml2js from 'xml2js';
 	styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-	public xmlItems: any;
-	private http: HttpClient;
+	public searchTerm: string;
+	public filteredItems: any;
+	private xmlItems: any;
 
-	constructor(public navCtrl: NavController, http: HttpClient) {
-		this.http = http;
+	constructor(public toastController: ToastController, private http: HttpClient, private file: File, private filePath: FilePath) {
+		this.searchTerm = '';
 	}
 
 	ionViewWillEnter() {
-		this.loadXml();
+		this.file.checkFile(this.file.dataDirectory, 'video_games.xml')
+			.then(_ => { this.loadXml('video_games'); })
+			.catch(err => {
+				this.DisplayMessage('A sample file will be used. Please go to the Settings tab to download your XML.');
+				this.loadXml('sample');
+			});
 	}
 
-	loadXml() {
-		//this.http.get('https://media.jamesrskemp.com/xml/video_games.xml',
-		this.http.get('/assets/data/video_games.xml',
-		{
-			headers: new HttpHeaders()
-			.set('Content-Type', 'text/xml')
-			.append('Access-Control-Allow-Methods', 'GET')
-			.append('Access-Control-Allow-Origin', '*')
-			.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Access-Control-Request-Method'),
-			responseType: 'text'
-		})
-		.subscribe((data) => {
-			this.parseXml(data)
-			.then((data: any[]) => {
-				this.xmlItems = data.sort((g1, g2) => (g1.title.toLowerCase() > g2.title.toLowerCase()) ? 1 : ((g2.title.toLowerCase() > g1.title.toLowerCase()) ? -1 : 0));
-			});
-		});
+	loadXml(fileName: string) {
+		// Uncomment the following line to verify the data path.
+		// TODO move somewhere else
+		// this.DisplayMessage2(this.file.dataDirectory);
+
+		if (fileName !== 'sample') {
+			this.filePath.resolveNativePath(this.file.dataDirectory)
+				.then(filePath => {
+					this.file.readAsText(filePath, fileName + '.xml')
+					.then(data => {
+						this.parseXml(data)
+						.then((data2: any[]) => {
+							this.xmlItems = data2.sort(
+								(g1, g2) => (g1.title.toLowerCase() > g2.title.toLowerCase())
+								? 1
+								: ((g2.title.toLowerCase() > g1.title.toLowerCase())
+									? -1
+									: 0)
+							);
+						})
+						.then(() => {
+							this.filteredItems = [...this.xmlItems];
+						});
+					})
+					.catch(err => {
+						this.DisplayMessage('There was a problem reading data.\nPlease verify application permissions and try again.');
+					});
+				})
+				.catch(err => {
+					/* Shouldn't be necessary to handle anything here. */
+				});
+		} else {
+			this.http.get('assets/data/' + fileName + '.xml',
+				{
+					headers: new HttpHeaders()
+						.set('Content-Type', 'text/xml')
+						.append('Access-Control-Allow-Methods', 'GET')
+						.append('Access-Control-Allow-Origin', '*')
+						.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Access-Control-Allow-Origin, Access-Control-Request-Method'),
+						responseType: 'text'
+				})
+				.subscribe((data) => {
+					this.parseXml(data)
+					.then((data2: any[]) => {
+						this.xmlItems = data2.sort(
+							(g1, g2) => (g1.title.toLowerCase() > g2.title.toLowerCase())
+							? 1
+							: ((g2.title.toLowerCase() > g1.title.toLowerCase())
+								? -1
+								: 0)
+						);
+					})
+					.then(() => {
+						this.filteredItems = [...this.xmlItems];
+					});
+				});
+		}
 	}
 
 	parseXml(data) {
@@ -48,7 +96,7 @@ export class Tab1Page {
 					explicitArray: true
 				});
 
-			parser.parseString(data, function (err, result) {
+			parser.parseString(data, (err, result) => {
 				const obj = result.games;
 				for (const game of obj.game) {
 					arr.push({
@@ -69,29 +117,33 @@ export class Tab1Page {
 	}
 
 	filterGames(searchTerm: string) {
-		return this.xmlItems.filter((item) => {
-			return item.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+		return this.filteredItems.filter((item: any) => {
+			return item.title.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+		});
+	}
+
+	setFilteredItems(searchTerm: string) {
+		this.filteredItems = [...this.xmlItems];
+		this.filteredItems = this.filterGames(this.searchTerm);
+	}
+
+	DisplayMessage(message: string) {
+		this.toastController.create({
+			message,
+			duration: 3000,
+			position: 'middle'
+		}).then(toastData => {
+			toastData.present();
+		});
+	}
+
+	DisplayMessage2(message: string) {
+		this.toastController.create({
+			message,
+			duration: 3000,
+			position: 'bottom'
+		}).then(toastData => {
+			toastData.present();
 		});
 	}
 }
-
-/*
-<game id="2" electronic="true" beat="true" addOn="true">
-	<title>flOw</title>
-	<system>
-		<console>PlayStation</console>
-		<version>3</version>
-	</system>
-	<purchase>
-		<date>2007-11-17</date>
-		<price>7.99</price>
-		<place>PlayStation Network</place>
-	</purchase>
-	<sell>
-		<date>2010-05-17</date>
-		<price>5.83</price>
-	</sell>
-	<own>yes</own>
-	<notes>Bought online.</notes>
-</game>
-*/

@@ -1,9 +1,16 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab Two
+      Settings
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+	<ion-item>
+		<ion-label>XML File Location</ion-label>
+		<ion-input type="text" clearInput placeholder="Enter path to XML file." inputmode="url" [(ngModel)]="XmlFileUrl"></ion-input>
+	</ion-item>
+	<ion-button color="primary" expand="block" (click)="DownloadFile();">Download File</ion-button>
+	<ion-button color="danger" expand="block" (click)="DeleteFile();">Delete Downloaded File</ion-button>
+</ion-content>
