@@ -53,11 +53,11 @@ export class Tab1Page {
 						});
 					})
 					.catch(err => {
-						console.log(err);
+						this.DisplayMessage('There was a problem reading data.\nPlease verify application permissions and try again.');
 					});
 				})
 				.catch(err => {
-					console.log(err);
+					/* Shouldn't be necessary to handle anything here. */
 				});
 		} else {
 			this.http.get('assets/data/' + fileName + '.xml',

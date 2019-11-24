@@ -11,17 +11,22 @@ import { Platform, ToastController } from '@ionic/angular';
 
 export class Tab2Page {
 	private fileTransfer: FileTransferObject;
-	XmlFileUrl = 'https://media.jamesrskemp.com/xml/video_games.xml';
+	public XmlFileUrl: string;
 
 	constructor(public platform: Platform, public toastController: ToastController, private transfer: FileTransfer, private file: File) {
 		this.fileTransfer = this.transfer.create();
+
+		const xmlFileUrlSavedSetting = window.localStorage.getItem('xmlFileUrl');
+		if (xmlFileUrlSavedSetting !== null) {
+			this.XmlFileUrl = xmlFileUrlSavedSetting;
+		} else {
+			this.XmlFileUrl = 'https://media.jamesrskemp.com/xml/video_games.xml';
+		}
 	}
 
 	DownloadFile() {
 		if (this.XmlFileUrl.length > 0) {
 			if (this.platform.is('cordova')) {
-				// TODO
-				this.DisplayMessage(this.file.dataDirectory);
 				// See if a downloaded file exists. If it does, delete it.
 				this.file.checkFile(this.file.dataDirectory, 'downloaded.xml')
 					.then(_ => {
@@ -29,7 +34,7 @@ export class Tab2Page {
 						this.file.removeFile(this.file.dataDirectory, 'downloaded.xml')
 						.catch(err => { console.log(err); });
 					})
-					.catch(err => { console.log(err); });
+					.catch(err => { /* Nothing needs to be done. */ });
 
 				this.fileTransfer.download(this.XmlFileUrl, this.file.dataDirectory + 'downloaded.xml')
 					.then(entry => {
@@ -40,16 +45,20 @@ export class Tab2Page {
 								.catch(err => { console.log(err); });
 							})
 							.catch(err => { /* No worries if the file doesn't exist. */ });
-						// Old file deleted. Rename the deleted file.
+						// Old file deleted. Rename the downloaded file.
 						this.file.moveFile(this.file.dataDirectory, 'downloaded.xml', this.file.dataDirectory, 'video_games.xml')
 							.then(movedEntry => {
 								const message = 'XML has been downloaded and is now available for use.\n'
 								+ 'If this is your first time downloading a file, you will be prompted to allow file system access.';
 								this.DisplayMessage(message);
+								window.localStorage.setItem('xmlFileUrl', this.XmlFileUrl);
 							})
 							.catch(err => { console.log(err); });
 					})
-					.catch(err => { console.log(err); });
+					.catch(err => { this.DisplayMessage('There was an issue downloading your file.\nPlease verify the URL.'); });
+			} else {
+				this.DisplayMessage('It does not appear you\'re using a supported device.\n'
+				+ 'If you believe this in error please restart the application.');
 			}
 		}
 	}
