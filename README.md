@@ -1,8 +1,8 @@
-# MyVideoGames
-MyVideoGames can be used to display video games entered into a valid XML file. This application features offline support.
+# My Video Game Tracker
+My Video Game Tracker can be used to display video games entered into a valid XML file. This application features offline support.
 
 ## Usage
-To use MyVideoGames you'll need to create an XML file with a specific data format and make it available for online consumption. Optionally, you can build the project from source and deploy it to your device directly.
+To use My Video Game Tracker you'll need to create an XML file with a specific data format and make it available for online consumption. Optionally, you can build the project from source and deploy it to your device directly.
 
 ### XML File Format
 The XML file should consist of the following content, at minimum:

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.jamesrskemp.android.myvideogames" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>MyVideoGames</name>
+<widget id="com.jamesrskemp.android.myvideogames" version="3.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>My Video Game Tracker</name>
     <description>Save and display video game information from a formatted XML file.</description>
     <author email="strivinglife@gmail.com" href="https://github.com/JamesSkemp/MyVideoGames">James Skemp</author>
     <content src="index.html" />
