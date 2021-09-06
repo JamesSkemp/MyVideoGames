@@ -1,7 +1,0 @@
-{
-  "name": "myVideoGames",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
-}
