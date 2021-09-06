@@ -1,7 +1,7 @@
 <div (click)="toggleDisplay()" [ngClass]="game.own === true ? '' : 'sold'">
   <h3>{{ game.title }}</h3>
   <span>{{ game.system.console }} {{ game.system.version }}</span>
-  <div *ngIf="displayDetails">
+  <div class="gameDetails" *ngIf="displayDetails">
     <span>ID: {{ game.meta.id }}</span>
     <span>Own: {{ game.own }}</span>
     <span>Notes: {{ game.notes }}</span>
