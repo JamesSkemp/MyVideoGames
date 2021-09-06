@@ -1,0 +1,7 @@
+div {
+  > div {
+    &:nth-child(even) {
+      background-color: #eee;
+    }
+  }
+}

@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  display: grid;
+  grid: auto-flow min-content / 1fr 1fr;
+  grid-template-areas:
+    "header"
+    "nav"
+    "main"
+    "footer";
+}
+
+header { grid-area: header; }
+nav { grid-area: nav; }
+main { grid-area: main; }
+footer { grid-area: footer; }

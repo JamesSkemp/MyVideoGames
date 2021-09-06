@@ -1,0 +1,7 @@
+<p>games-list works!</p>
+{{ this.games?.length }}
+<div *ngIf="this.games">
+  <div *ngFor="let game of this.games">
+    <span>{{ game.title }}</span>
+  </div>
+</div>
