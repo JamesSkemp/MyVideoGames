@@ -1,0 +1,12 @@
+div {
+  > div {
+    border-bottom: 1px solid #ddd;
+    padding: .5em;
+    h3 {
+      margin: 0;
+    }
+    span {
+      display: block;
+    }
+  }
+}

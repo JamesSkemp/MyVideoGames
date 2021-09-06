@@ -1,49 +1,27 @@
-# My Video Game Tracker
-My Video Game Tracker can be used to display video games entered into a valid XML file. This application features offline support.
+# MyVideoGames
 
-## Usage
-To use My Video Game Tracker you'll need to create an XML file with a specific data format and make it available for online consumption. Optionally, you can build the project from source and deploy it to your device directly.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.4.
 
-### XML File Format
-The XML file should consist of the following content, at minimum:
+## Development server
 
-```xml
-<?xml version="1.0" standalone="no"?>
-<games xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:noNamespaceSchemaLocation="https://media.jamesrskemp.com/xsd/2013/11/VideoGames.xsd">
-	<!--
-	<game id="">
-		<title></title>
-		<system>
-			<console></console>
-			<version></version>
-		</system>
-		<purchase>
-			<date></date>
-			<price></price>
-			<place></place>
-		</purchase>
-		<own>yes</own>
-		<notes></notes>
-	</game>
-	-->
-</games>
-```
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-Full schema information, including other optional attributes, can be found at [https://media.jamesrskemp.com/xsd/2013/11/VideoGames.xsd](https://media.jamesrskemp.com/xsd/2013/11/VideoGames.xsd).
+## Code scaffolding
 
-## Initial Creation
-- `ionic start myVideoGames tabs`
-- Selected v4 (beta)
-- `ionic serve` within the application directory to run
-	- `ionic cordova run android -l` to run in the Android emulator.
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-[Parsing XML, CSV and TSV files with Ionic][1] used to help understand how to pull XML data.
+## Build
 
-## Publishing
-1. `cordova platform remove android`
-2. Update version in config.xml.
-3. `cordova platform add android`
-4. `cordova build --release`
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-[1]: http://masteringionic.com/blog/2016-12-18-parsing-xml-csv-and-tsv-files-with-ionic/
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
