@@ -12,28 +12,40 @@ export class GamesListComponent implements OnInit, OnDestroy {
   gamesServiceSub!: Subscription;
   gamesServiceSub2!: Subscription;
   games: IVideoGame[] | null = null;
+  // TODO filter/search
 
   constructor(private gamesService: GamesService) { }
 
   ngOnInit(): void {
     this.gamesServiceSub = this.gamesService.getGames().subscribe({
       next: games => {
-        console.log('Games Service');
-        //console.log(games);
-        this.games = games.games.game;
-        console.log(this.games);
-        //console.log(this.games.game[0]);
+        this.games = games.games.game.sort((a, b) => {
+          const title1 = a.title.toLocaleUpperCase();
+          const title2 = b.title.toLocaleUpperCase();
+
+          if (title1 < title2) {
+            return -1;
+          }
+          if (title1 > title2) {
+            return 1;
+          }
+          if (a.system.console < b.system.console) {
+            return -1;
+          }
+          if (a.system.console > b.system.console) {
+            return 1;
+          }
+          if (a.system.version < b.system.version) {
+            return -1;
+          }
+          if (a.system.version > b.system.version) {
+            return 1;
+          }
+          return 0;
+        });
       },
       error: e => console.log(e)
     });
-    /*this.gamesServiceSub2 = this.gamesService.getGamesXml().subscribe({
-      next: games => {
-        console.log('Games Service 2');
-        console.log(games);
-//        this.games = games;
-      },
-      error: e => console.log(e)
-    });*/
   }
 
   ngOnDestroy(): void {
@@ -41,4 +53,8 @@ export class GamesListComponent implements OnInit, OnDestroy {
     this.gamesServiceSub2.unsubscribe();
   }
 
+  toggleDetails(element: any): void {
+    //console.log(arguments);
+    console.log(element);
+  }
 }

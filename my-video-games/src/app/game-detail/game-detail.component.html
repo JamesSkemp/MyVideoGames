@@ -1,1 +1,19 @@
-<p>game-detail works!</p>
+<div (click)="toggleDisplay()" [ngClass]="game.own === true ? '' : 'sold'">
+  <h3>{{ game.title }}</h3>
+  <span>{{ game.system.console }} {{ game.system.version }}</span>
+  <div *ngIf="displayDetails">
+    <span>ID: {{ game.meta.id }}</span>
+    <span>Own: {{ game.own }}</span>
+    <span>Notes: {{ game.notes }}</span>
+    <span *ngIf="game.meta.addOn">Add-on</span>
+    <span *ngIf="game.meta.electronic">Electronic</span>
+    <span *ngIf="game.meta.beat">Beat</span>
+    <span *ngIf="game.meta.used">Purchased used</span>
+    <div *ngIf="game.purchase.date || game.purchase.price || game.purchase.place">
+      <h4>Purchase</h4>
+      <span>{{ game.purchase.date }}</span>
+      <span *ngIf="game.purchase.price">${{ game.purchase.price }}</span>
+      <span>{{ game.purchase.place }}</span>
+    </div>
+  </div>
+</div>
