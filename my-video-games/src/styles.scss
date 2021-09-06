@@ -1,15 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+$bgColor1: #789;
+$textColor1: #fff;
+
 body {
   display: grid;
-  grid: auto-flow min-content / 1fr 1fr;
+  font-family: sans-serif;
+  grid: auto-flow min-content / 1fr;
   grid-template-areas:
     "header"
     "nav"
     "main"
     "footer";
+  margin: 0;
 }
 
-header { grid-area: header; }
-nav { grid-area: nav; }
-main { grid-area: main; }
-footer { grid-area: footer; }
+header {
+  background-color: $bgColor1;
+  color: $textColor1;
+  grid-area: header;
+  padding: 1em;
+
+  h1 {
+    margin: 0;
+  }
+}
+nav {
+  grid-area: nav;
+}
+main {
+  grid-area: main;
+  padding: 1em;
+}
+footer {
+  background-color: $bgColor1;
+  color: $textColor1;
+  grid-area: footer;
+  padding: 1em;
+}

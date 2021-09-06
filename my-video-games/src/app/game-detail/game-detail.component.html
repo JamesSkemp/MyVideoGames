@@ -9,15 +9,15 @@
     <span *ngIf="game.meta.electronic">Electronic</span>
     <span *ngIf="game.meta.beat">Beat</span>
     <span *ngIf="game.meta.used">Purchased used</span>
-    <div>
+    <div *ngIf="game.purchase?.date || game.purchase?.price || game.purchase?.place">
       <h4>Purchase</h4>
       <span>Date: {{ game.purchase.date }}</span>
       <span>Price: ${{ game.purchase.price }}</span>
       <span>Place: {{ game.purchase.place }}</span>
     </div>
-    <div *ngIf="game.sell.date || game.sell.price">
+    <div *ngIf="game.sell?.date || game.sell?.price">
       <h4>Sold</h4>
-      <span>Date: {{ game.sell.date }}</span>
+      <span *ngIf="game.sell.date">Date: {{ game.sell?.date }}</span>
       <span *ngIf="game.sell.price">Price: ${{ game.sell.price }}</span>
     </div>
   </div>
