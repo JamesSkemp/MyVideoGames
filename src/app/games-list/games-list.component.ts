@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable, of, Subject, Subscription, switchMap, throwIfEmpty } from 'rxjs';
 import { GamesService } from '../games.service';
 import { IVideoGame } from '../interfaces/video-game';
 
@@ -11,8 +11,12 @@ import { IVideoGame } from '../interfaces/video-game';
 export class GamesListComponent implements OnInit, OnDestroy {
   gamesServiceSub!: Subscription;
   gamesServiceSub2!: Subscription;
-  games: IVideoGame[] | null = null;
-  filteredGames: IVideoGame[] | null = null;
+  games: IVideoGame[] = [];
+  filteredGames: IVideoGame[] = [];
+
+  searchSubscription?: Subscription;
+  private readonly searchSubject = new Subject<string | undefined>();
+
   private _listFilter = '';
   get listFilter(): string {
     return this._listFilter;
@@ -25,6 +29,11 @@ export class GamesListComponent implements OnInit, OnDestroy {
   constructor(private gamesService: GamesService) { }
 
   ngOnInit(): void {
+    this.searchSubscription = this.searchSubject.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((searchQuery) => of(this.games.filter(game => game.title.toLocaleLowerCase().includes(searchQuery ?? ''))))
+    ).subscribe((results) => (this.filteredGames = results));
     this.gamesServiceSub = this.gamesService.getGames().subscribe({
       next: games => {
         this.games = this.sortGames(games.games.game);
@@ -36,11 +45,17 @@ export class GamesListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.gamesServiceSub.unsubscribe();
     this.gamesServiceSub2.unsubscribe();
+    this.searchSubscription?.unsubscribe();
   }
 
   toggleDetails(element: any): void {
     //console.log(arguments);
     console.log(element);
+  }
+
+  onSearchQueryInput(event: Event) {
+    const searchQuery = (event.target as HTMLInputElement).value;
+    this.searchSubject.next(searchQuery?.trim().toLocaleLowerCase());
   }
 
   sortGames(games: IVideoGame[]): IVideoGame[] {
