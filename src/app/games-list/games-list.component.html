@@ -1,11 +1,12 @@
 <h2>Video Games</h2>
+
 <div *ngIf="this.games">
   <p>There are a total of {{ this.games.length }} games.</p>
   <label>Search: <input type="text" id="searchQuery" (input)="onSearchQueryInput($event)" /></label>
   <div *ngIf="this.filteredGames">Filtered to {{ this.filteredGames.length }} games.</div>
-  <div *ngFor="let game of this.filteredGames">
-    <app-game-detail [game]="game"></app-game-detail>
-  </div>
+  <mat-accordion *ngIf="this.games.length">
+    <app-game-detail *ngFor="let game of this.filteredGames" [game]="game"></app-game-detail>
+  </mat-accordion>
 </div>
 <div *ngIf="!this.games.length">
   <p>Loading game data.</p>

@@ -1,7 +1,13 @@
-<div (click)="toggleDisplay()" [ngClass]="game.own === true ? '' : 'sold'">
-  <h3>{{ game.title }}</h3>
-  <span>{{ game.system.console }} {{ game.system.version }}</span>
-  <div class="gameDetails" *ngIf="displayDetails">
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title [ngClass]="game.own === true ? '' : 'sold'">
+      {{game.title}}
+    </mat-panel-title>
+    <mat-panel-description>
+      {{ game.system.console }} {{ game.system.version }}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <div class="gameDetails">
     <span>ID: {{ game.meta.id }}</span>
     <span>Own: {{ game.own }}</span>
     <span>Notes: {{ game.notes }}</span>
@@ -21,4 +27,4 @@
       <span *ngIf="game.sell.price">Price: ${{ game.sell.price }}</span>
     </div>
   </div>
-</div>
+</mat-expansion-panel>
