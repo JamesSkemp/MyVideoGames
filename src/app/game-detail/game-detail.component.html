@@ -5,6 +5,8 @@
     </mat-panel-title>
     <mat-panel-description>
       {{ game.system.console }} {{ game.system.version }}
+      <mat-icon *ngIf="game.meta.electronic" title="Electronic Download">cloud_download</mat-icon>
+      <mat-icon *ngIf="game.meta.addOn" title="Add-On">note_add</mat-icon>
     </mat-panel-description>
   </mat-expansion-panel-header>
   <div class="gameDetails">
