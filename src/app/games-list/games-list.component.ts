@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged, Observable, of, Subject, Subscription, switchMap, throwIfEmpty } from 'rxjs';
 import { GamesService } from '../games.service';
 import { IVideoGame } from '../interfaces/video-game';
@@ -26,14 +27,21 @@ export class GamesListComponent implements OnInit, OnDestroy {
     this.filterGames();
   }
 
-  constructor(private gamesService: GamesService) { }
+  constructor(private gamesService: GamesService, private matSnackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.searchSubscription = this.searchSubject.pipe(
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((searchQuery) => of(this.games.filter(game => game.title.toLocaleLowerCase().includes(searchQuery ?? ''))))
-    ).subscribe((results) => (this.filteredGames = results));
+    ).subscribe((results) => {
+      if (results.length <= 100) {
+        this.filteredGames = results;
+      } else {
+        this.filteredGames = [];
+        this.matSnackBar.open('More than 100 results were returned. Please adjust your search.', 'Dismiss', { duration: 5000, panelClass: 'snack-bar-error' })
+      }
+    });
     this.gamesServiceSub = this.gamesService.getGames().subscribe({
       next: games => {
         this.games = this.sortGames(games.games.game);
