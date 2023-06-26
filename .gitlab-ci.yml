@@ -4,7 +4,6 @@ pages:
     paths:
       - node_modules/
   script:
-    - npm install -g @angular/cli@15
     - npm install
     - npm run buildProd
   artifacts:
