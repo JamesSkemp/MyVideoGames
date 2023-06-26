@@ -1,6 +1,8 @@
 # MyVideoGames
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.4 and has been upgraded to version 15.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.4 and has been upgraded to version 16.
+
+Update Angular with `ng update @angular/cli @angular/core @angular/material @angular-eslint/schematics`.
 
 ## Development server
 
